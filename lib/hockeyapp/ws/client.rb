@@ -63,8 +63,14 @@ module HockeyApp
       resp.code == 200
     end
 
-    def create_app file_ipa
-      resp = ws.post_new_app(file_ipa)
+    def create_app file_ipa, file_dsym=nil, options={}
+      resp = ws.post_new_app(file_ipa, file_dsym, options)
+      raise resp['errors'].map{|e|e.to_s}.join("\n") unless resp['errors'].nil?
+      App.from_hash(resp, self)
+    end
+
+    def create_app_without_file options={}
+      resp = ws.post_new_app_without_file(options)
       raise resp['errors'].map{|e|e.to_s}.join("\n") unless resp['errors'].nil?
       App.from_hash(resp, self)
     end

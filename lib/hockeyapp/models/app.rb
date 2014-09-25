@@ -14,19 +14,26 @@ module HockeyApp
     POST_PAYLOAD = [:status,:notes_type, :notify]
 
     NOTES_TYPES_TO_SYM = {
-        0 => :textile,
-        1 => :markdown
+      0 => :textile,
+      1 => :markdown
     }
 
 
     NOTIFY_TO_BOOL = {
-        0 => false,
-        1 => true
+      0 => false,
+      1 => true
     }
 
     STATUS_TO_SYM = {
-        1 => :deny,
-        2 => :allow
+      1 => :deny,
+      2 => :allow
+    }
+
+    RELEASETYPE_TO_SYM = {
+      2 => :alpha,
+      0 => :beta,
+      1 => :store,
+      3 => :enterprise
     }
 
     attr_accessor *ATTRIBUTES

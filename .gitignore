@@ -3,3 +3,5 @@
 pkg/*
 .idea
 coverage
+.ruby-version
+.ruby-gemset

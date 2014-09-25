@@ -35,7 +35,11 @@ module HockeyApp
       Struct.new(:code).new(200)
     end
 
-    def post_new_app file_ipa
+    def post_new_app file_ipa, file_dsym=nil, options={}
+     respond "new_app"
+    end
+
+    def post_new_app_without_file options={}
      respond "new_app"
     end
 

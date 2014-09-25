@@ -1,4 +1,5 @@
 require 'httmultiparty'
+require 'active_support/core_ext/hash'
 
 module HockeyApp
   class WS
@@ -88,19 +89,24 @@ module HockeyApp
       response
     end
 
-    def post_new_app(file_ipa,
-        notes="New app",
-        notes_type=App::NOTES_TYPES_TO_SYM.invert[:textile],
-        notify=App::NOTIFY_TO_BOOL.invert[false],
-        status=App::STATUS_TO_SYM.invert[:allow])
-      params = {
-          :ipa => file_ipa,
-          :notes => notes,
-          :notes_type => notes_type,
-          :notify => notify,
-          :status => status
-      }
-      self.class.post "/apps", :body => params
+    def post_new_app(file_ipa, file_dsym=nil, options={})
+      options = options.with_indifferent_access
+      options[:notes]       ||= "New App"
+      options[:notes_type]    = App::NOTES_TYPES_TO_SYM.invert[ options[:notes_type] || :textile ]
+      options[:notify]        = App::NOTIFY_TO_BOOL.invert[ !!options[:notify] ]
+      options[:status]        = App::STATUS_TO_SYM.invert[ options[:status] || :allow ]
+      options[:release_type]  = App::RELEASETYPE_TO_SYM.invert[ options[:release_type] ] if options[:release_type]
+      options[:ipa]           = file_ipa    if file_ipa
+      options[:dsym]          = file_dsym   if file_dsym
+      self.class.post "/apps/upload", :body => options
     end
+
+    def post_new_app_without_file(options={})
+      options = options.with_indifferent_access
+      options[:title]           ||= "My Awesome App"
+      options[:release_type]  = App::RELEASETYPE_TO_SYM.invert[ options[:release_type] ] if options[:release_type]
+      self.class.post "/apps/new", :body => options
+    end
+
   end
 end

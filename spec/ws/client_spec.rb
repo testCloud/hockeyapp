@@ -149,5 +149,11 @@ describe HockeyApp::Client do
         client.create_app(binary_file).should be_kind_of ::HockeyApp::App
       end
     end
+
+    describe "create_app_without_file" do
+      it "returns an App object" do
+        client.create_app(bundle_identifier: 'com.hockey.app').should be_kind_of ::HockeyApp::App
+      end
+    end
   end
 end
